@@ -3,7 +3,6 @@
 <html lang="en-us">
 
 <head>
-
   <meta charset="UTF-8">
   <title>Train Schedule</title>
 
@@ -16,7 +15,10 @@
   <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
 
   <!-- Moment.js Reference -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
 
   <!-- CSS Style link-->
   <link rel="stylesheet" type="text/css" href="Assets/css/style.css"> 
@@ -38,7 +40,7 @@
         <div class="card md-4">
           <div class="card-body">
             <h3>Current train schedule</h3>
-            <table class="table text-align:center">
+            <table class="table text-align:center" id="train-table">
               <thead>
                 <tr>
                   <th class="tableHeader">Train Name</th>
@@ -64,24 +66,34 @@
             <h2>Add Train</h2>
             <!-- Entry Form -->
             <form>
-              <div class="form-group row">
-                <label for="employee-name-input">Train Name</label>
+              <!-- Train name textbox -->
+              <div class="row">
+                <label for="train-name-input">Train Name</label>
                 <input class="form-control" id="train-name-input" placeholder="Midnight Carriage, e.g." type="text">
               </div>
-              <div class="form-group row">
-                <label for="role-input">Destination</label>
-                <input class="form-control" id="destination-input" placeholder="Philadelphia" type="text">
+              
+              <!-- Destination textbox -->
+              <div class="row">
+                <label for="destination-input">Destination</label>
+                <input class="form-control" id="destination-input" placeholder="City" type="text">
               </div>
-              <div class="form-group row">
-                <label for="start-input">First Train Time (HH:mm - military time)</label>
+              
+              <!-- First Train Time textbox -->
+              <div class="row">
+                <label for="train-time-input">First Train Time (HH:mm - military time)</label>
                 <input class="form-control" id="train-time-input" placeholder="00:00 - 24:00" type="text">
               </div>
-              <div class="form-group row">
-                <label for="rate-input">Minutes Away</label>
-                <input class="form-control" id="minutes-input" placeholder="minutes here" type="text">
+              
+              <!-- Frequency textbox -->
+              <div class="row">
+                <label for="frequency-input">Frequency</label>
+                <input class="form-control" id="frequency-input" placeholder="Put Minutes Here" type="text">
               </div>
+              
+              <!-- Submit button-->
               <button class="btn btn-primary float-right" id="add-train-btn">Submit</button>
             </form>
+
           </div>
         </div>
       </div>

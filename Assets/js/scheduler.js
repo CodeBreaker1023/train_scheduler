@@ -1,99 +1,105 @@
-// Steps to complete:
-
-// 1. Initialize Firebase
-// 2. Create button for adding new employees - then update the html + update the database
-// 3. Create a way to retrieve employees from the employee database.
-// 4. Create a way to calculate the months worked. Using difference between start and current time.
-//    Then use moment.js formatting to set difference in months.
-// 5. Calculate Total billed
-
  // Initialize Firebase
  var config = {
     apiKey: "AIzaSyB6MzXFlulVse4B0ALemX9E8oAtymTbm3c",
     authDomain: "trainscheduler-a8b96.firebaseapp.com",
     databaseURL: "https://trainscheduler-a8b96.firebaseio.com",
     projectId: "trainscheduler-a8b96",
-    storageBucket: "",
+    storageBucket: "trainscheduler-a8b96.appspot.com",
     messagingSenderId: "646041502572"
   };
   firebase.initializeApp(config);
   
   var database = firebase.database();
   
-  // 2. Button for adding Employees
+  // 2. Button for adding trains
   $("#add-train-btn").on("click", function(event) {
     event.preventDefault();
   
     // Grabs user input
     var trainName = $("#train-name-input").val().trim();
     var destination = $("#destination-input").val().trim();
-    var trainTime = moment($("#train-time-input").val().trim(), "HH:mm").format("X");
-    var minutesAway = $("#minutes-input").val().trim();
+    var firstTrain = moment($("#train-time-input").val().trim(), "HH:mm").format("X");
+    var frequency = $("#frequency-input").val().trim();
   
-    // Creates local "temporary" object for holding employee data
+    // Creates local "temporary" object for holding train info
     var trainTable = {
       name: trainName,
       destination: destination,
-      departure: trainTime,
-      minutes: minutesAway
+      first: firstTrain,
+      minutes: frequency
     };
   
-    // Uploads employee data to the database
+    // Uploads user's train input data to the database
     database.ref().push(trainTable);
       // Logs everything to console
     console.log(trainTable.name);
     console.log(trainTable.destination);
-    console.log(trainTable.departure);
+    console.log(firstTrain);
     console.log(trainTable.minutes);
-  
-    alert("Employee successfully added");
-  
+
     // Clears all of the text-boxes
     $("#train-name-input").val("");
     $("#destination-input").val("");
     $("#train-time-input").val("");
-    $("#minutes-input").val("");
+    $("#frequency-input").val("");
   });
   
-  // 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
+  // 3. Create Firebase event for adding trains to the database and a row in the html when a user adds an entry
   database.ref().on("child_added", function(childSnapshot) {
     console.log(childSnapshot.val());
   
     // Store snapshot into a variable
     var trainName = childSnapshot.val().name;
     var destination = childSnapshot.val().destination;
-    var departure = childSnapshot.val().departure;
-    var minutesAway = childSnapshot.val().minutes;
+    var frequency = childSnapshot.val().minutes;
+    var firstTrain = childSnapshot.val().firstTrain;
+    var nextArrival = childSnapshot.val().arrival;
+    var minutesAway = childSnapshot.val().minutesAway;
       // Console log for verification
     console.log(trainName);
     console.log(destination);
-    console.log(departure);
+    console.log(frequency);
+    console.log(nextArrival);
     console.log(minutesAway);
   
-    // Make depature time in military time format
-    var departureTIme = moment.unix(departure).format("HH:mm");
-  
-    // Calculate minutes away
-    var empBilled = empMonths * empRate;
-    console.log(empBilled);
-  
+    // Make next arrival time in military time format
+    var convertArrivalTime = moment.unix(nextArrival).format("HH:mm");
+    
+    // Calculate Mintues Away
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(firstTrain, "HH:mm").subtract(1, "years");
+    console.log(firstTimeConverted);
+
+    // Current Time
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+
+    // Time apart (remainder)
+    var tRemainder = diffTime % frequency;  
+    console.log(tRemainder);
+
+    // Minutes Until Train
+    var minutesAway = frequency - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + minutesAway);
+
+    // Next Train
+    var nextTrain = moment().add(minutesAway, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    
     // Create the new row tag with td tags to append each entry by user
     var newRow = $("<tr>").append(
       $("<td>").text(trainName),
       $("<td>").text(destination),
-      $("<td>").text(departureTIme),
-      $("<td>").text(minutesAway),
+      $("<td>").text(frequency),
+      $("<td>").text(convertArrivalTime),
+      $("<td>").text(minutesAway)    
     );
   
     // Append the new row to the table
-    $("#employee-table > tbody").append(newRow);
+    $("#train-table > tbody").append(newRow);
   });
-  
-  // Example Time Math
-  // -----------------------------------------------------------------------------
-  // Assume Employee start date of January 1, 2015
-  // Assume current date is March 1, 2016
-  
-  // We know that this is 15 months.
-  // Now we will create code in moment.js to confirm that any attempt we use meets this test case
   
