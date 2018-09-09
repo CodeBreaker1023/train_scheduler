@@ -21,7 +21,7 @@
     var firstTrain = moment($("#train-time-input").val().trim(), "HH:mm").format("X");
     var frequency = $("#frequency-input").val().trim();
   
-    // Creates local "temporary" object for holding train info
+    // Creates temp local object for holding train info
     var trainTable = {
       name: trainName,
       destination: destination,
@@ -34,7 +34,7 @@
       // Logs everything to console
     console.log(trainTable.name);
     console.log(trainTable.destination);
-    console.log(firstTrain);
+    console.log(trainTable.first);
     console.log(trainTable.minutes);
 
     // Clears all of the text-boxes
@@ -52,19 +52,20 @@
     var trainName = childSnapshot.val().name;
     var destination = childSnapshot.val().destination;
     var frequency = childSnapshot.val().minutes;
-    var firstTrain = childSnapshot.val().firstTrain;
-    var nextArrival = childSnapshot.val().arrival;
-    var minutesAway = childSnapshot.val().minutesAway;
+    var firstTrain =  childSnapshot.val().first;
+    // var nextArrival = childSnapshot.val().arrival;
+    // var minutesAway = childSnapshot.val().minutesAway;
       // Console log for verification
     console.log(trainName);
     console.log(destination);
     console.log(frequency);
-    console.log(nextArrival);
-    console.log(minutesAway);
-  
+    console.log(firstTrain);
+    // console.log(nextArrival);
+    // console.log(minutesAway);
+
     // Make next arrival time in military time format
     var convertArrivalTime = moment.unix(nextArrival).format("HH:mm");
-    
+
     // Calculate Mintues Away
     // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(firstTrain, "HH:mm").subtract(1, "years");
@@ -87,8 +88,8 @@
     console.log("MINUTES TILL TRAIN: " + minutesAway);
 
     // Next Train
-    var nextTrain = moment().add(minutesAway, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    var nextArrival = moment().add(minutesAway, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextArrival).format("hh:mm"));
     
     // Create the new row tag with td tags to append each entry by user
     var newRow = $("<tr>").append(
