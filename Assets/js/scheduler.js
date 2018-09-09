@@ -64,7 +64,7 @@
     // console.log(minutesAway);
 
     // Make next arrival time in military time format
-    var convertArrivalTime = moment.unix(nextArrival).format("HH:mm");
+    // var convertArrivalTime = moment.unix(nextArrival).format("HH:mm");
 
     // Calculate Mintues Away
     // First Time (pushed back 1 year to make sure it comes before current time)
@@ -96,7 +96,7 @@
       $("<td>").text(trainName),
       $("<td>").text(destination),
       $("<td>").text(frequency),
-      $("<td>").text(convertArrivalTime),
+      $("<td>").text(nextArrival),
       $("<td>").text(minutesAway)    
     );
   
