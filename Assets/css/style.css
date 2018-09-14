@@ -2,8 +2,21 @@
     background-color: coral;
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 10px;
     border: 5px solid peachpuff;
+}
+
+body {
+    background-image: url("https://transportnsw.info/sites/default/files/styles/hero_small/public/image/2018/05/getting-to-airport-20170214-compressor.jpg?itok=YdxtjLV_");
+    background-position: center;
+    background-size: 100%;
+    background-position-y: 0px;
+    align-content: center;
+}
+
+.container {
+    width: 50%;
+    margin: auto;
 }
 
 .table {
@@ -13,4 +26,25 @@
 
 .tableHeader {
     margin: auto;
+}
+
+#add-train-btn {
+    margin: 10px;
+}
+
+.tSched {
+    background-color: white;
+    opacity: .9;
+    margin-bottom: 4px;
+    padding: 4px;
+}
+
+.tSched-body {
+    margin-bottom: 30px;
+    padding: 10px 30px 30px 30px;
+}
+
+.table {
+    margin: -10px 100px -10px 0px;
+    text-align: center;
 }

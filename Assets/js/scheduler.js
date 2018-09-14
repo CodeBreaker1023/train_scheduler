@@ -11,7 +11,7 @@
   
   var database = firebase.database();
   
-  // 2. Button for adding trains
+  // on Click button for adding trains
   $("#add-train-btn").on("click", function(event) {
     event.preventDefault();
   
@@ -44,7 +44,7 @@
     $("#frequency-input").val("");
   });
   
-  // 3. Create Firebase event for adding trains to the database and a row in the html when a user adds an entry
+  // Create Firebase event for adding trains to the database and a row in the html when a user adds an entry
   database.ref().on("child_added", function(childSnapshot) {
     console.log(childSnapshot.val());
   
@@ -64,7 +64,7 @@
     // console.log(minutesAway);
 
     // Make next arrival time in military time format
-    // var convertArrivalTime = moment.unix(nextArrival).format("HH:mm");
+    var convertArrivalTime = moment.unix(nextArrival).format("HH:mm");
 
     // Calculate Mintues Away
     // First Time (pushed back 1 year to make sure it comes before current time)
@@ -79,7 +79,7 @@
     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
     console.log("DIFFERENCE IN TIME: " + diffTime);
 
-    // Time apart (remainder)
+    // Time between trains (remainder)
     var tRemainder = diffTime % frequency;  
     console.log(tRemainder);
 
@@ -88,7 +88,8 @@
     console.log("MINUTES TILL TRAIN: " + minutesAway);
 
     // Next Train
-    var nextArrival = moment().add(minutesAway, "minutes");
+    var nextArrival = moment().add(minutesAway, "minutes").format("HH:mm A");
+
     console.log("ARRIVAL TIME: " + moment(nextArrival).format("hh:mm"));
     
     // Create the new row tag with td tags to append each entry by user
